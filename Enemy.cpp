@@ -13,10 +13,12 @@ Enemy::Enemy(Vector2 pos, float moveX) {//コンストラクタ
 		Bullet[i] = new EnemyBullet;
 	}
 	shotTimer_ = kMaxShotTimer_;
-	canShot_ = true;
+	canShot_ = false;
 
 	reloadTimer_ = kMaxReloadTimer_;
-	isReload_ = false;
+	isReload_ = true;
+	respawnTimer_ = kMaxRespawnTimer_;
+
 }
 
 Enemy::~Enemy() {//デストラクタ
@@ -28,84 +30,92 @@ Enemy::~Enemy() {//デストラクタ
 
 //更新
 void Enemy::Update(Vector2 PlayerPos) {
-	
-	//前フレーム弾丸が発射されている状態だったかどうか判断する
-	for (int i = 0; i < kMaxEBullet; i++) {
-		Bullet[i]->PreShotUpdate();
-	}
+
+
 
 	/*----------------------------------------------------------------------*/
 
 							//移動関係の処理//
 
 	/*----------------------------------------------------------------------*/
+	if (isAlive_) {
+		//移動処理
+		pos_.x += move_.x * speed_;
+		pos_.y += move_.y * speed_;
 
-	//移動処理
-	pos_.x += move_.x * speed_;
-	pos_.y += move_.y * speed_;
-
-	//画面端で方向転換する
-	if (pos_.x <= WindowSize::kOutSize_.x + size_.x) {
-		pos_.x = WindowSize::kOutSize_.x + size_.x;
-		move_.x *= -1;
-	}
-	if (pos_.x >= (1280 - WindowSize::kOutSize_.x) - size_.x) {
-		pos_.x = (1280 - WindowSize::kOutSize_.x) - size_.x;
-		move_.x *= -1;
-	}
-
-
-
-	/*----------------------------------------------------------------------*/
-
-							//弾丸を発射する関係の処理//
-
-	/*----------------------------------------------------------------------*/
-
-
-	//弾を発射する処理
-	if (!isReload_) {
-		//弾を打てない状態の時
-		if (!canShot_) {
-			shotTimer_--;//タイマーを減らし
-			if (shotTimer_ == 0) {//０になったら打てるようにする
-				canShot_ = true;
-				shotTimer_ = kMaxShotTimer_;
-			}
+		//画面端で方向転換する
+		if (pos_.x <= WindowSize::kOutSize_.x + size_.x) {
+			pos_.x = WindowSize::kOutSize_.x + size_.x;
+			move_.x *= -1;
 		}
-		if (canShot_) {
-			canShot_ = false;
-			for (int i = 0; i < kMaxEBullet; i++) {
-				if (!Bullet[i]->GetisShot()) {//弾が発射されていなければ
-					Bullet[i]->SetBullet(pos_);//自機の座標に弾を持ってくる
-					shotCount_--;//発射するたびにカウントを減らす
-					break;
+		if (pos_.x >= (1280 - WindowSize::kOutSize_.x) - size_.x) {
+			pos_.x = (1280 - WindowSize::kOutSize_.x) - size_.x;
+			move_.x *= -1;
+		}
+
+
+
+		/*----------------------------------------------------------------------*/
+
+								//弾丸を発射する関係の処理//
+
+		/*----------------------------------------------------------------------*/
+
+		//弾を発射する処理
+		if (!isReload_) {
+			if (isAlive_) {
+				//弾を打てない状態の時
+				if (!canShot_) {
+					shotTimer_--;//タイマーを減らし
+					if (shotTimer_ == 0) {//０になったら打てるようにする
+						canShot_ = true;
+						shotTimer_ = kMaxShotTimer_;
+					}
 				}
+				if (canShot_) {
+					canShot_ = false;
+					for (int i = 0; i < kMaxEBullet; i++) {
+						if (!Bullet[i]->GetisShot()) {//弾が発射されていなければ
+							Bullet[i]->SetBullet(pos_, PlayerPos);//自機の座標に弾を持ってくる
+							shotCount_--;//発射するたびにカウントを減らす
+							break;
+						}
 
+					}
+				}
 			}
-		}
-	} else {//Reload_がtureのとき
-		if (shotCount_ == 3) {//カウントが３のとき（一発も発射されていないとき）
-			reloadTimer_--;//タイマーを減らし
-			if (reloadTimer_ == 0) {//０になったら打てるようにする
-				isReload_ = false;
-				reloadTimer_ = kMaxReloadTimer_;
+
+			if (shotCount_ == 0) {//カウントが０の時（全ての弾丸が発射されているとき）
+				isReload_ = true;//リロード状態にする
 			}
+
+		} else {//Reload_がtureのとき
+			if (shotCount_ == 3) {//カウントが３のとき（一発も発射されていないとき）
+				reloadTimer_--;//タイマーを減らし
+				if (reloadTimer_ == 0) {//０になったら打てるようにする
+					isReload_ = false;
+					reloadTimer_ = kMaxReloadTimer_;
+				}
+			}
+
 		}
 
 	}
 
-	if (shotCount_ == 0) {//カウントが０の時（全ての弾丸が発射されているとき）
-		isReload_ = true;//リロード状態にする
-	}
 
 
 	//弾丸の更新
 	for (int i = 0; i < kMaxEBullet; i++) {
+		//前フレーム弾丸が発射されている状態だったかどうか判断する
+		Bullet[i]->PreShotUpdate();
 		Bullet[i]->Update(PlayerPos);
-		if (Bullet[i]->GetisShot()!= Bullet[i]->GetpreIsShot()) {
+		if (!Bullet[i]->GetisShot() &&
+			Bullet[i]->GetpreIsShot()) {
 			shotCount_++;
 		}
+
+
+
 	}
 
 
@@ -113,23 +123,29 @@ void Enemy::Update(Vector2 PlayerPos) {
 
 	/*----------------------------------------------------------------------*/
 
-					//弾丸を発射する関係の処理②②まで//
+								//リスポーンの処理//
 
 	/*----------------------------------------------------------------------*/
+
+	if (!isAlive_) {
+		respawnTimer_--;
+		if (respawnTimer_ <= 0) {
+			isAlive_ = true;
+			respawnTimer_ = kMaxRespawnTimer_;
+		}
+	}
 
 }
 
 //当たり判定
-void Enemy::Colision() {
-	//自機と敵の弾
-	//自機が死ぬ
-
-
-	//自機と敵
-	//自機が死ぬ
-
+void Enemy::OnColision() {
+	isAlive_ = false;
 }
 
+void Enemy::BulletOnColision(int element) {
+	Bullet[element]->SetIsShot();
+	shotCount_++;
+}
 //描画
 void Enemy::Draw() {
 
@@ -146,6 +162,10 @@ void Enemy::Draw() {
 			0.0f, RED, kFillModeSolid);
 	}
 
+	Novice::ScreenPrintf(0, 0, "shotCount=%d", shotCount_);
+	Novice::ScreenPrintf(0, 20, "isShot=%d", Bullet[0]->GetisShot());
+	Novice::ScreenPrintf(0, 40, "preShot_=%d", Bullet[0]->GetpreIsShot());
+	Novice::ScreenPrintf(0, 60, "len=%f", Bullet[0]->toPlayerLength_);
 
 
 }

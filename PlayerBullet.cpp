@@ -27,6 +27,10 @@ void PlayerBullet::Update() {
 
 }
 
+void PlayerBullet::OnColision() {
+	isShot_=false;
+	pos_ = { -640,-200 };
+}
 
 void PlayerBullet::SetBullet(Vector2 playerPos_) {
 	pos_ = playerPos_;
@@ -39,6 +43,6 @@ void PlayerBullet::Draw() {
 			static_cast<int>((pos_.y - 720) * -1),
 			static_cast<int>(size_.x),
 			static_cast<int>(size_.y),
-			0.0f, 0x6666FFFF, kFillModeSolid);
+			0.0f, 0x2222FFFF, kFillModeSolid);
 	}
 }

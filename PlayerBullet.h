@@ -10,12 +10,13 @@ public:
 	void Update();
 	void Draw();
 	void SetBullet(Vector2 playerPos_);
-
+	void OnColision();
 
 	//アクセッサ類
 	Vector2 GetPos() { return pos_; };
 	Vector2 GetSize() { return size_; };
 	bool GetisShot() { return isShot_; };
+	void SetIsShot() { isShot_ = false; };
 
 };
 

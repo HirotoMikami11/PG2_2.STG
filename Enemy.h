@@ -17,6 +17,8 @@ class Enemy :public Object{
 	const int kMaxReloadTimer_ = 180;	//最大値
 	bool isReload_;						//リロード中か否かfalseのときに発射する
 	
+	int respawnTimer_;					//リスポーンまでのタイマー
+	const int kMaxRespawnTimer_ = 120;	//最大値
 
 public:
 
@@ -25,15 +27,18 @@ public:
 
 	//更新
 	void Update(Vector2 PlayerPos);
-	void Colision();
+	void OnColision();
+	void BulletOnColision(int element);
 
 	//描画
 	void Draw();
 
 	//アクセッサ類
 	Vector2 GetPos() { return pos_; };
+	bool  GetAlive () { return isAlive_; };
 	Vector2 GetSize() { return size_; };
 	Vector2 GetBulletPos(int element) { return Bullet[element]->GetPos(); };
 	Vector2 GetBulleSize(int element) { return Bullet[element]->GetSize(); };
+	void SetBulleShot(int element) { return Bullet[element]->SetIsShot(); };
 };
 

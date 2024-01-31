@@ -2,7 +2,7 @@
 Game::Game() {
 	player = new Player;
 	for (int i = 0; i < kMaxEnemy; i++) {
-		enemy[i] = new Enemy({ 640,400.0f+ 100.0f * i }, powf(-1, float(i)));
+		enemy[i] = new Enemy({ 640,400.0f + 100.0f * i }, powf(-1, float(i)));
 	}
 }
 Game::~Game() {
@@ -18,18 +18,45 @@ void Game::Update(char* keys, char* preKeys) {
 	for (int i = 0; i < kMaxEnemy; i++) {
 		enemy[i]->Update(player->GetPos());
 	}
+	Colisions();
 
 }
+
+void Game::Colisions() {
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (enemy[i]->GetAlive()) {
+				if (Colision(enemy[i]->GetPos(), player->GetBulletPos(j), enemy[i]->GetSize(), player->GetBulleSize(j))) {
+					enemy[i]->OnColision();
+					player->BulleOnColision(j);
+				}
+			}
+
+		}
+		for (int j = 0; j < 3; j++) {
+			if(!player->GetDamage()){
+				if (Colision(player->GetPos(), enemy[i]->GetBulletPos(j),
+					player->GetSize(), enemy[i]->GetBulleSize(j))) {
+
+					player->OnColision();;
+					enemy[i]->BulletOnColision(j);
+				}
+			}
+		}
+	}
+
+}
+
 void Game::Draw(Resources rs) {
 	rs;
 
-	player->Draw();	
+	player->Draw();
 	for (int i = 0; i < kMaxEnemy; i++) {
 		enemy[i]->Draw();
 	}
-	
+
 	Novice::DrawBox(0, 0, WindowSize::kOutSize_.x, 720, 0.0f, 0x000000FF, kFillModeSolid);
 	Novice::DrawBox(1280, 0, -WindowSize::kOutSize_.x, 720, 0.0f, 0x000000FF, kFillModeSolid);
-	
-	
+
+
 }

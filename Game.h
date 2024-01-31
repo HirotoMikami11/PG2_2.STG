@@ -14,6 +14,7 @@ public:
 	Game();
 	~Game();
 	void Update(char* keys, char* preKeys);
+	void Colisions();
 	void Draw(Resources rs);
 
 };

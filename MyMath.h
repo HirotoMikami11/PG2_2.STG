@@ -18,6 +18,8 @@
 //画面内に存在するか否か
 bool InADisplay(Vector2 pos, Vector2 size);
 
+//衝突したか否か
+bool Colision(Vector2 objA_pos,Vector2 objB_pos,Vector2 objA_size,Vector2 objB_size);
 
 
 //線形補間関数

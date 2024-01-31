@@ -27,7 +27,21 @@ bool InADisplay(Vector2 pos, Vector2 size) {
 	return true;
 
 }
+bool Colision(Vector2 objA_pos, Vector2 objB_pos, Vector2 objA_size, Vector2 objB_size) {
+	Vector2 distance;
+	float AtoBDistance;
+	float AandBSize;
 
+	distance.x = objA_pos.x - objB_pos.x;
+	distance.y = objA_pos.y - objB_pos.y;
+	AtoBDistance = (distance.x * distance.x) + (distance.y * distance.y);
+	AandBSize = (objA_size.x * objA_size.x) + (objB_size.x * objB_size.x);
+	if (AtoBDistance <= AandBSize) {
+		return 1;
+	} else {
+		return 0;
+	}
+}
 
 
 //線形補間関数

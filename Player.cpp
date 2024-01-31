@@ -14,6 +14,10 @@ Player::Player() {//コンストラクタ
 	}
 	shotTimer_ = kMaxShotTimer_;
 	canShot_ = true;
+	HP_ = 5;
+	isDamage_ = false;
+	respownTimer_ = kMaxRespownTimer_;
+	isDraw_ = true;
 }
 
 Player::~Player() {//デストラクタ
@@ -53,10 +57,10 @@ void Player::Update(char* keys, char* preKeys) {
 
 	move_ = { 0,0 };
 
-	if (pos_.x<= WindowSize::kOutSize_.x +size_.x) {
+	if (pos_.x <= WindowSize::kOutSize_.x + size_.x) {
 		pos_.x = WindowSize::kOutSize_.x + size_.x;
 	}
-	if (pos_.x >= (1280- WindowSize::kOutSize_.x)- size_.x) {
+	if (pos_.x >= (1280 - WindowSize::kOutSize_.x) - size_.x) {
 		pos_.x = (1280 - WindowSize::kOutSize_.x) - size_.x;
 	}
 
@@ -69,7 +73,7 @@ void Player::Update(char* keys, char* preKeys) {
 
 
 	/*----------------------------------------------------------------------*/
-	
+
 							//弾丸を発射する関係の処理//
 
 	/*----------------------------------------------------------------------*/
@@ -109,16 +113,38 @@ void Player::Update(char* keys, char* preKeys) {
 
 	/*----------------------------------------------------------------------*/
 
+	if (isDamage_) {
+	
+		if (respownTimer_ % 10 == 0) {//点滅
+			if (isDraw_) {
+				isDraw_ = false;
+			} else {
+				isDraw_ = true;
+			}
+		}
+		respownTimer_ --;
+		if (respownTimer_ == 0) {//タイマー０になったら無敵時間終わり
+			isDamage_ = false;
+			respownTimer_ = kMaxRespownTimer_;//タイマーリセット
+		}
+	}
+
+
+	if (HP_ <= 0) {
+		isAlive_ = false;
+	}
+
 }
 
 //当たり判定
-void Player::Colision() {
-	//自機と敵の弾
-	//自機が死ぬ
-
-
-	//自機と敵
-	//自機が死ぬ
+void Player::OnColision() {
+	if (!isDamage_) {//ダメージを受けていないとき
+		isDamage_ = true;
+		HP_--;
+	}
+}
+void Player::BulleOnColision(int element) {
+	Bullet[element]->SetIsShot();
 
 }
 
@@ -130,7 +156,7 @@ void Player::Draw() {
 		Bullet[i]->Draw();
 	}
 
-	if (isAlive_) {//自機が生きている間だけ描画
+	if (isDraw_) {//自機が生きている間だけ描画
 		Novice::DrawEllipse(static_cast<int>(pos_.x),
 			static_cast<int>((pos_.y - 720) * -1),
 			static_cast<int>(size_.x),
