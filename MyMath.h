@@ -7,6 +7,7 @@
 
 #include"WindowSize.h"
 #include"Resources.h"
+#include"Box.h"
 
 
 ///*-------------------------------------------------------------------*///

@@ -1,6 +1,8 @@
 ﻿#include "Enemy.h"
 
 const int Enemy::kMaxEBullet = 3;
+const int Enemy::kMaxEnemyKillCount_ = 5;
+int Enemy::enemyKillCount_ = Enemy::kMaxEnemyKillCount_;
 
 Enemy::Enemy(Vector2 pos, float moveX) {//コンストラクタ
 	pos_ = pos;
@@ -18,15 +20,39 @@ Enemy::Enemy(Vector2 pos, float moveX) {//コンストラクタ
 	reloadTimer_ = kMaxReloadTimer_;
 	isReload_ = true;
 	respawnTimer_ = kMaxRespawnTimer_;
-
+	for (int i = 0; i < kMaxEnemyKillCount_; i++) {
+		hpBox[i] = new Box({ 0,0 }, { 48,48 }, RED);//あと何回倒せばいいのかを表示するボックス
+		hpBox[i]->SetPos({ 1120, 150 + (size_.y * 3.0f * (i + 1)) });
+	}
 }
 
 Enemy::~Enemy() {//デストラクタ
 	for (int i = 0; i < kMaxEBullet; i++) {
 		delete Bullet[i];
 	}
+	for (int i = 0; i < kMaxEnemyKillCount_; i++) {
+		delete hpBox[i];
+	}
 }
 
+void Enemy::Reset(Vector2 pos, float moveX) {
+	pos_ = pos;
+	size_ = { 20,20 };
+	move_ = { moveX,0 };
+	speed_ = 5;
+	isAlive_ = true;
+	shotCount_ = kMaxShoitCount_;
+	for (int i = 0; i < kMaxEBullet; i++) {
+		Bullet[i]->Reset();
+	}
+	shotTimer_ = kMaxShotTimer_;
+	canShot_ = false;
+
+	reloadTimer_ = kMaxReloadTimer_;
+	isReload_ = true;
+	respawnTimer_ = kMaxRespawnTimer_;
+	enemyKillCount_ = kMaxEnemyKillCount_;
+}
 
 //更新
 void Enemy::Update(Vector2 PlayerPos) {
@@ -140,6 +166,7 @@ void Enemy::Update(Vector2 PlayerPos) {
 //当たり判定
 void Enemy::OnColision() {
 	isAlive_ = false;
+	enemyKillCount_--;
 }
 
 void Enemy::BulletOnColision(int element) {
@@ -147,7 +174,7 @@ void Enemy::BulletOnColision(int element) {
 	shotCount_++;
 }
 //描画
-void Enemy::Draw() {
+void Enemy::Draw(Resources rs) {
 
 
 	for (int i = 0; i < kMaxEBullet; i++) {
@@ -162,10 +189,9 @@ void Enemy::Draw() {
 			0.0f, RED, kFillModeSolid);
 	}
 
-	Novice::ScreenPrintf(0, 0, "shotCount=%d", shotCount_);
-	Novice::ScreenPrintf(0, 20, "isShot=%d", Bullet[0]->GetisShot());
-	Novice::ScreenPrintf(0, 40, "preShot_=%d", Bullet[0]->GetpreIsShot());
-	Novice::ScreenPrintf(0, 60, "len=%f", Bullet[0]->toPlayerLength_);
+	for (int i = 0; i < Enemy::enemyKillCount_; i++) {
+		hpBox[i]->MyDrawSprite(rs.HpGH_);
+	}
 
 
 }

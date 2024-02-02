@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include"MyMath.h"
+
 enum SCENE {
 	TITLE,
 	GAME,

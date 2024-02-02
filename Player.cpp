@@ -18,15 +18,41 @@ Player::Player() {//コンストラクタ
 	isDamage_ = false;
 	respownTimer_ = kMaxRespownTimer_;
 	isDraw_ = true;
+
+	for (int i = 0; i < HP_; i++) {
+		hpBox[i] = new Box({ 0,0 }, { 48,48 }, BLUE);//あと何回倒せばいいのかを表示するボックス
+		hpBox[i]->SetPos({ 100, 100 + (size_.y * 3.0f * (i + 1)) });
+	}
+
+
 }
 
 Player::~Player() {//デストラクタ
 	for (int i = 0; i < kMaxPBullet; i++) {
 		delete Bullet[i];
 	}
+	for (int i = 0; i < HP_; i++) {
+		delete hpBox[i];
+	}
 }
 
+void Player::Reset() {
+	pos_ = { 640,200 };
+	size_ = { 20,20 };
+	move_ = { 0,0 };
+	speed_ = 5;
+	isAlive_ = true;
 
+	for (int i = 0; i < kMaxPBullet; i++) {
+		Bullet[i]->Reset();
+	}
+	shotTimer_ = kMaxShotTimer_;
+	canShot_ = true;
+	HP_ = 5;
+	isDamage_ = false;
+	respownTimer_ = kMaxRespownTimer_;
+	isDraw_ = true;
+}
 //更新
 void Player::Update(char* keys, char* preKeys) {
 
@@ -114,7 +140,7 @@ void Player::Update(char* keys, char* preKeys) {
 	/*----------------------------------------------------------------------*/
 
 	if (isDamage_) {
-	
+
 		if (respownTimer_ % 10 == 0) {//点滅
 			if (isDraw_) {
 				isDraw_ = false;
@@ -122,7 +148,7 @@ void Player::Update(char* keys, char* preKeys) {
 				isDraw_ = true;
 			}
 		}
-		respownTimer_ --;
+		respownTimer_--;
 		if (respownTimer_ == 0) {//タイマー０になったら無敵時間終わり
 			isDamage_ = false;
 			respownTimer_ = kMaxRespownTimer_;//タイマーリセット
@@ -130,8 +156,14 @@ void Player::Update(char* keys, char* preKeys) {
 	}
 
 
+
+
+
 	if (HP_ <= 0) {
 		isAlive_ = false;
+	}
+	if (!isAlive_) {
+		isDraw_ = false;
 	}
 
 }
@@ -149,7 +181,7 @@ void Player::BulleOnColision(int element) {
 }
 
 //描画
-void Player::Draw() {
+void Player::Draw(Resources rs) {
 
 
 	for (int i = 0; i < kMaxPBullet; i++) {
@@ -163,6 +195,10 @@ void Player::Draw() {
 			static_cast<int>(size_.y),
 			0.0f, BLUE, kFillModeSolid);
 	}
+	for (int i = 0; i < HP_; i++) {
+		hpBox[i]->MyDrawSprite(rs.HpGH_);
+	}
+
 
 
 

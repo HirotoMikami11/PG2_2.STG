@@ -18,6 +18,21 @@ EnemyBullet::EnemyBullet() {
 EnemyBullet::~EnemyBullet() {
 
 }
+void EnemyBullet::Reset() {
+	pos_ = { -640,-200 };
+	size_ = { 10,10 };
+	speed_ = 3;
+
+	isShot_ = false;
+	preIsShot_ = false;
+	//ホーミングする処理の関数
+	isHoming_ = true;
+	toPlayerLength_ = 1000.0f;
+	dir_ = { 0,0 };
+	normalizedir_ = { 0,0 };
+
+	reflectCount_ = kmaxReflectCount_;
+}
 void EnemyBullet::Update(Vector2 PlayerPos_) {
 	/*----------------------------------------------------------------------*/
 						//発射された弾丸の処理//

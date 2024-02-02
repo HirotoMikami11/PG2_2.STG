@@ -5,6 +5,7 @@ SceneManager::SceneManager() {
 	game = new Game;
 	clear = new GameClear;
 	over = new GameOver;
+	SC = new SceneChange();
 }
 
 SceneManager::~SceneManager() {
@@ -12,33 +13,37 @@ SceneManager::~SceneManager() {
 	delete game;
 	delete clear;
 	delete over;
+	delete SC;
+
 }
 void SceneManager::Update(char* keys, char* preKeys) {
-	keys; preKeys;
+
 	switch (Scene::SceneNum_) {
 
 	case TITLE:
-		title->Update(keys, preKeys);
-		break;
+		title->Update(keys, preKeys, SC);
+		game->Reset();
 
+		break;
 	case GAME:
-		game->Update(keys, preKeys);
+		game->Update(keys, preKeys, SC);
 		break;
 	case CLEAR:
-		clear->Update(keys, preKeys);
+		clear->Update(keys, preKeys, SC);
 		break;
 	case OVER:
-		over->Update(keys, preKeys);
+		over->Update(keys, preKeys, SC);
 		break;
 	default:
 		break;
 	}
-
+	SC->Update();
 	//ここにシーンチェンジの関数を設置する
+
 
 }
 void SceneManager::Draw(Resources rs) {
-	rs;
+
 	switch (Scene::SceneNum_) {
 
 	case TITLE:
@@ -56,6 +61,9 @@ void SceneManager::Draw(Resources rs) {
 		break;
 	default:
 		break;
+
+
 	}
+	SC->Draw();
 	//ここにシーンチェンジの関数を設置する
 }

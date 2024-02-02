@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.h"
+#include "SceneChange.h"
 #include "Player.h"
 #include "Enemy.h"
 
@@ -13,7 +13,8 @@ public:
 
 	Game();
 	~Game();
-	void Update(char* keys, char* preKeys);
+	void Reset();
+	void Update(char* keys, char* preKeys,SceneChange *SC);
 	void Colisions();
 	void Draw(Resources rs);
 

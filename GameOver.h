@@ -1,12 +1,14 @@
 #pragma once
 
-#include "Scene.h"
+#include "SceneChange.h"
 class GameOver{
+	Box* gameoverFont;
+	Box* pressSpace;
 public:
 
 	GameOver();
 	~GameOver();
-	void Update(char* keys, char* preKeys);
+	void Update(char* keys, char* preKeys,SceneChange *SC);
 	void Draw(Resources rs);
 };
 

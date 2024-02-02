@@ -20,23 +20,27 @@ class Player :public Object {
 	int respownTimer_;
 	const int kMaxRespownTimer_ = 120;
 
+	Box* hpBox[5];//あと何回倒せばいいのかを表示するボックス
+
 public:
 
 	Player();//コンストラクタ
 	~Player();//デストラクタ
 
+	void Reset();
 	//更新
 	void Update(char* keys, char* preKeys);
 	void OnColision();
 	void BulleOnColision(int element);
 	
 	//描画
-	void Draw();
+	void Draw(Resources rs);
 
 	//アクセッサ類
 	Vector2 GetPos() { return pos_; };
 	Vector2 GetSize() { return size_; };
 	bool GetDamage() { return isDamage_; };
+	bool GetAlive() { return isAlive_; };
 	Vector2 GetBulletPos(int element) { return Bullet[element]->GetPos(); };
 	Vector2 GetBulleSize(int element) { return Bullet[element]->GetSize(); };
 	void SetBulleShot(int element) { return Bullet[element]->SetIsShot(); };

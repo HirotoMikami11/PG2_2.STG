@@ -7,6 +7,7 @@ class PlayerBullet :public Object{
 public:
 	PlayerBullet();//コンストラクタ
 	~PlayerBullet();//デストラクタ
+	void Reset();
 	void Update();
 	void Draw();
 	void SetBullet(Vector2 playerPos_);

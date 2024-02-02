@@ -107,6 +107,12 @@
     <ClCompile Include="EnemyBullet.cpp">
       <Filter>Object\Enemy\EnemyBullet</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>KamataEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneChange.cpp">
+      <Filter>SceneManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="C:\KamataEngine\DirectXGame\audio\Audio.h">
@@ -226,6 +232,10 @@
     </ClInclude>
     <ClInclude Include="EnemyBullet.h">
       <Filter>Object\Enemy\EnemyBullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h" />
+    <ClInclude Include="SceneChange.h">
+      <Filter>SceneManager</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

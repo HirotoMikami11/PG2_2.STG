@@ -3,6 +3,7 @@
 #include"Game.h"
 #include"GameClear.h"
 #include"GameOver.h"
+#include"SceneChange.h"
 
 
 class SceneManager{
@@ -10,6 +11,7 @@ class SceneManager{
 	Game* game;
 	GameClear* clear;
 	GameOver* over;
+	SceneChange* SC;
 
 public:
 	SceneManager();

@@ -19,6 +19,7 @@ public:
 
 	EnemyBullet();//コンストラクタ
 	~EnemyBullet();//デストラクタ
+	void Reset();
 	void Update(Vector2 PlayerPos_);
 	void Draw();
 	void SetBullet(Vector2 EnemyPos_, Vector2 PlayerPos_);

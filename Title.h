@@ -1,12 +1,16 @@
 #pragma once
-#include "Scene.h"
+#include "SceneChange.h"
 
 class Title{
+
+	Box* pressStart;
+	Box* titleName;
+
 public:
 
 	Title();
 	~Title();
-	void Update(char* keys, char* preKeys);
+	void Update(char* keys, char* preKeys,SceneChange *SC);
 	void Draw(Resources rs);
 };
 

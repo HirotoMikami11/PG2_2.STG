@@ -10,6 +10,14 @@ PlayerBullet::PlayerBullet() {
 PlayerBullet::~PlayerBullet() {
 
 }
+
+void PlayerBullet::Reset() {
+	pos_ = { -640,-200 };
+	size_ = { 10,10 };
+	speed_ = 15;
+	isShot_ = false;
+}
+
 void PlayerBullet::Update() {
 
 	if (isShot_) {

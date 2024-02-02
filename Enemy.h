@@ -20,10 +20,17 @@ class Enemy :public Object{
 	int respawnTimer_;					//リスポーンまでのタイマー
 	const int kMaxRespawnTimer_ = 120;	//最大値
 
+	static const int kMaxEnemyKillCount_ ;
+	Box* hpBox[5];//あと何回倒せばいいのかを表示するボックス
 public:
+	//あと何回敵を倒せばいいのかのカウント
+	//０になったらゲームクリア
+	static int enemyKillCount_;
+
 
 	Enemy(Vector2 pos,float moveX);//コンストラクタ
 	~Enemy();//デストラクタ
+	void Reset(Vector2 pos, float moveX);
 
 	//更新
 	void Update(Vector2 PlayerPos);
@@ -31,7 +38,7 @@ public:
 	void BulletOnColision(int element);
 
 	//描画
-	void Draw();
+	void Draw(Resources rs);
 
 	//アクセッサ類
 	Vector2 GetPos() { return pos_; };
