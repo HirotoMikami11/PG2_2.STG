@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Object.h"
-#include "PlayerBullet.h"
+#include "Bullet.h"
 
 class Player :public Object {
 
@@ -10,7 +10,7 @@ class Player :public Object {
 	bool isDraw_;
 
 	static const int kMaxPBullet;
-	PlayerBullet* Bullet[10];
+	Bullet* bullet[15];
 	int shotTimer_;
 	const int kMaxShotTimer_ = 10;
 	bool canShot_;
@@ -41,8 +41,8 @@ public:
 	Vector2 GetSize() { return size_; };
 	bool GetDamage() { return isDamage_; };
 	bool GetAlive() { return isAlive_; };
-	Vector2 GetBulletPos(int element) { return Bullet[element]->GetPos(); };
-	Vector2 GetBulleSize(int element) { return Bullet[element]->GetSize(); };
-	void SetBulleShot(int element) { return Bullet[element]->SetIsShot(); };
+	Vector2 GetBulletPos(int element) { return bullet[element]->GetPos(); };
+	Vector2 GetBulleSize(int element) { return bullet[element]->GetSize(); };
+	void SetBulleShot(int element) { return bullet[element]->SetIsShot(); };
 };
 

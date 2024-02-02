@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 
-const int Player::kMaxPBullet = 10;
+const int Player::kMaxPBullet = 15;
 
 Player::Player() {//コンストラクタ
 	pos_ = { 640,200 };
@@ -10,7 +10,7 @@ Player::Player() {//コンストラクタ
 	isAlive_ = true;
 
 	for (int i = 0; i < kMaxPBullet; i++) {
-		Bullet[i] = new PlayerBullet;
+		bullet[i] = new Bullet;
 	}
 	shotTimer_ = kMaxShotTimer_;
 	canShot_ = true;
@@ -29,7 +29,7 @@ Player::Player() {//コンストラクタ
 
 Player::~Player() {//デストラクタ
 	for (int i = 0; i < kMaxPBullet; i++) {
-		delete Bullet[i];
+		delete bullet[i];
 	}
 	for (int i = 0; i < HP_; i++) {
 		delete hpBox[i];
@@ -44,7 +44,7 @@ void Player::Reset() {
 	isAlive_ = true;
 
 	for (int i = 0; i < kMaxPBullet; i++) {
-		Bullet[i]->Reset();
+		bullet[i]->Reset();
 	}
 	shotTimer_ = kMaxShotTimer_;
 	canShot_ = true;
@@ -119,8 +119,8 @@ void Player::Update(char* keys, char* preKeys) {
 			canShot_ = false;
 
 			for (int i = 0; i < kMaxPBullet; i++) {
-				if (!Bullet[i]->GetisShot()) {//弾が発射されていなければ
-					Bullet[i]->SetBullet(pos_);//自機の座標に弾を持ってくる
+				if (!bullet[i]->GetisShot()) {//弾が発射されていなければ
+					bullet[i]->SetBulletPlayer(pos_);//自機の座標に弾を持ってくる
 					break;
 				}
 
@@ -131,7 +131,7 @@ void Player::Update(char* keys, char* preKeys) {
 
 	//弾丸の更新
 	for (int i = 0; i < kMaxPBullet; i++) {
-		Bullet[i]->Update();
+		bullet[i]->Update();
 	}
 	/*----------------------------------------------------------------------*/
 
@@ -176,7 +176,7 @@ void Player::OnColision() {
 	}
 }
 void Player::BulleOnColision(int element) {
-	Bullet[element]->SetIsShot();
+	bullet[element]->SetIsShot();
 
 }
 
@@ -185,7 +185,7 @@ void Player::Draw(Resources rs) {
 
 
 	for (int i = 0; i < kMaxPBullet; i++) {
-		Bullet[i]->Draw();
+		bullet[i]->Draw();
 	}
 
 	if (isDraw_) {//自機が生きている間だけ描画

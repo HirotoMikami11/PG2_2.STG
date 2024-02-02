@@ -23,9 +23,6 @@
     <Filter Include="Object\Player">
       <UniqueIdentifier>{90764669-db18-49ef-a29d-fa72e794aa5b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Player\PlayerBullet">
-      <UniqueIdentifier>{7f8bc90e-48c9-4a94-bc7e-a2587ee2bb92}</UniqueIdentifier>
-    </Filter>
     <Filter Include="SceneManager">
       <UniqueIdentifier>{72ff4e10-7e33-457c-8cf5-1b0d09d57783}</UniqueIdentifier>
     </Filter>
@@ -35,8 +32,8 @@
     <Filter Include="Object\Enemy">
       <UniqueIdentifier>{2789c56d-aabb-435e-8e63-8fe980b0b735}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Enemy\EnemyBullet">
-      <UniqueIdentifier>{c510350a-ec7d-4b53-a54c-f75a9a59a22a}</UniqueIdentifier>
+    <Filter Include="Object\Bullet">
+      <UniqueIdentifier>{7db89492-26de-459c-8ce0-4f3d1ad9b8d3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +71,6 @@
     <ClCompile Include="Player.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerBullet.cpp">
-      <Filter>Object\Player\PlayerBullet</Filter>
-    </ClCompile>
     <ClCompile Include="WindowSize.cpp">
       <Filter>Util</Filter>
     </ClCompile>
@@ -104,14 +98,14 @@
     <ClCompile Include="Enemy.cpp">
       <Filter>Object\Enemy</Filter>
     </ClCompile>
-    <ClCompile Include="EnemyBullet.cpp">
-      <Filter>Object\Enemy\EnemyBullet</Filter>
-    </ClCompile>
-    <ClCompile Include="Box.cpp">
-      <Filter>KamataEngine</Filter>
-    </ClCompile>
     <ClCompile Include="SceneChange.cpp">
       <Filter>SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp">
+      <Filter>Object\Bullet</Filter>
+    </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -200,9 +194,6 @@
     <ClInclude Include="Player.h">
       <Filter>Object\Player</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerBullet.h">
-      <Filter>Object\Player\PlayerBullet</Filter>
-    </ClInclude>
     <ClInclude Include="WindowSize.h">
       <Filter>Util</Filter>
     </ClInclude>
@@ -230,12 +221,14 @@
     <ClInclude Include="Enemy.h">
       <Filter>Object\Enemy</Filter>
     </ClInclude>
-    <ClInclude Include="EnemyBullet.h">
-      <Filter>Object\Enemy\EnemyBullet</Filter>
-    </ClInclude>
-    <ClInclude Include="Box.h" />
     <ClInclude Include="SceneChange.h">
       <Filter>SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h">
+      <Filter>Object\Bullet</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Util</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

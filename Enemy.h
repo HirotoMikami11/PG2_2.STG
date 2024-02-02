@@ -1,13 +1,13 @@
 ﻿#pragma once
 #include "Object.h"
-#include "EnemyBullet.h"
+#include "Bullet.h"
 class Enemy :public Object{
 
 	Vector2 move_;
 	bool isAlive_;						//生きているか否か
 
 	static const int kMaxEBullet;		//弾丸の最大数
-	EnemyBullet* Bullet[3];
+	Bullet* bullet[3];
 	int shotTimer_;						//連射するときに使用するタイマー
 	const int kMaxShotTimer_ = 30;		//最大値
 	bool canShot_;						//連射できるかどうか
@@ -44,8 +44,8 @@ public:
 	Vector2 GetPos() { return pos_; };
 	bool  GetAlive () { return isAlive_; };
 	Vector2 GetSize() { return size_; };
-	Vector2 GetBulletPos(int element) { return Bullet[element]->GetPos(); };
-	Vector2 GetBulleSize(int element) { return Bullet[element]->GetSize(); };
-	void SetBulleShot(int element) { return Bullet[element]->SetIsShot(); };
+	Vector2 GetBulletPos(int element) { return bullet[element]->GetPos(); };
+	Vector2 GetBulleSize(int element) { return bullet[element]->GetSize(); };
+	void SetBulleShot(int element) { return bullet[element]->SetIsShot(); };
 };
 

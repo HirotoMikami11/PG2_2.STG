@@ -12,7 +12,7 @@ Enemy::Enemy(Vector2 pos, float moveX) {//コンストラクタ
 	isAlive_ = true;
 	shotCount_ = kMaxShoitCount_;
 	for (int i = 0; i < kMaxEBullet; i++) {
-		Bullet[i] = new EnemyBullet;
+		bullet[i] = new Bullet;
 	}
 	shotTimer_ = kMaxShotTimer_;
 	canShot_ = false;
@@ -28,7 +28,7 @@ Enemy::Enemy(Vector2 pos, float moveX) {//コンストラクタ
 
 Enemy::~Enemy() {//デストラクタ
 	for (int i = 0; i < kMaxEBullet; i++) {
-		delete Bullet[i];
+		delete bullet[i];
 	}
 	for (int i = 0; i < kMaxEnemyKillCount_; i++) {
 		delete hpBox[i];
@@ -43,7 +43,7 @@ void Enemy::Reset(Vector2 pos, float moveX) {
 	isAlive_ = true;
 	shotCount_ = kMaxShoitCount_;
 	for (int i = 0; i < kMaxEBullet; i++) {
-		Bullet[i]->Reset();
+		bullet[i]->Reset();
 	}
 	shotTimer_ = kMaxShotTimer_;
 	canShot_ = false;
@@ -101,8 +101,8 @@ void Enemy::Update(Vector2 PlayerPos) {
 				if (canShot_) {
 					canShot_ = false;
 					for (int i = 0; i < kMaxEBullet; i++) {
-						if (!Bullet[i]->GetisShot()) {//弾が発射されていなければ
-							Bullet[i]->SetBullet(pos_, PlayerPos);//自機の座標に弾を持ってくる
+						if (!bullet[i]->GetisShot()) {//弾が発射されていなければ
+							bullet[i]->SetBulletEnemy(pos_, PlayerPos);//自機の座標に弾を持ってくる
 							shotCount_--;//発射するたびにカウントを減らす
 							break;
 						}
@@ -133,10 +133,10 @@ void Enemy::Update(Vector2 PlayerPos) {
 	//弾丸の更新
 	for (int i = 0; i < kMaxEBullet; i++) {
 		//前フレーム弾丸が発射されている状態だったかどうか判断する
-		Bullet[i]->PreShotUpdate();
-		Bullet[i]->Update(PlayerPos);
-		if (!Bullet[i]->GetisShot() &&
-			Bullet[i]->GetpreIsShot()) {
+		bullet[i]->PreShotUpdate();
+		bullet[i]->Update();
+		if (!bullet[i]->GetisShot() &&
+			bullet[i]->GetpreIsShot()) {
 			shotCount_++;
 		}
 
@@ -170,7 +170,7 @@ void Enemy::OnColision() {
 }
 
 void Enemy::BulletOnColision(int element) {
-	Bullet[element]->SetIsShot();
+	bullet[element]->SetIsShot();
 	shotCount_++;
 }
 //描画
@@ -178,7 +178,7 @@ void Enemy::Draw(Resources rs) {
 
 
 	for (int i = 0; i < kMaxEBullet; i++) {
-		Bullet[i]->Draw();
+		bullet[i]->Draw();
 	}
 
 	if (isAlive_) {//敵が生きている間だけ描画
