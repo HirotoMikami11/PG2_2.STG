@@ -10,7 +10,7 @@ class Player :public Object {
 	bool isDraw_;
 
 	static const int kMaxPBullet;
-	Bullet* bullet[15];
+	Bullet* bullet[20];
 	int shotTimer_;
 	const int kMaxShotTimer_ = 10;
 	bool canShot_;

@@ -1,6 +1,6 @@
 ﻿#include "Player.h"
 
-const int Player::kMaxPBullet = 15;
+const int Player::kMaxPBullet = 20;
 
 Player::Player() {//コンストラクタ
 	pos_ = { 640,200 };

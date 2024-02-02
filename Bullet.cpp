@@ -108,7 +108,7 @@ void Bullet::SetBulletPlayer(Vector2 playerPos_) {
 	pos_ = playerPos_;
 	dir_.x = 0;
 	dir_.y = 1;
-	speed_ = 15;
+	speed_ = 10;
 	isShot_ = true;
 	reflectCount_ = kmaxReflectCount_;
 }

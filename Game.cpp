@@ -49,7 +49,7 @@ void Game::Update(char* keys, char* preKeys, SceneChange* SC) {
 
 void Game::Colisions() {
 	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < 20; j++) {
 			if (enemy[i]->GetAlive()) {
 				if (Colision(enemy[i]->GetPos(), player->GetBulletPos(j), enemy[i]->GetSize(), player->GetBulleSize(j))) {
 					enemy[i]->OnColision();
